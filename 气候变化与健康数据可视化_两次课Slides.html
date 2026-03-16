@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>气候变化与健康数据可视化（两次课）</title>
+  <style>
+    body { margin:0; font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; background:#0f172a; color:#e2e8f0; }
+    .slide { display:none; height:100vh; padding:56px 72px; box-sizing:border-box; }
+    .slide.active { display:block; }
+    h1 { font-size: 48px; margin: 0 0 20px; color:#f8fafc; }
+    h2 { font-size: 40px; margin: 0 0 16px; color:#f8fafc; }
+    h3 { font-size: 32px; margin: 0 0 12px; color:#cbd5e1; }
+    p, li { font-size: 28px; line-height: 1.5; }
+    ul { margin-top: 18px; }
+    .small li, .small p { font-size:24px; }
+    .tag { display:inline-block; padding:4px 12px; border-radius:999px; background:#1d4ed8; font-size:20px; margin-bottom:12px; }
+    .footer { position: fixed; bottom: 12px; left: 24px; right:24px; display:flex; justify-content:space-between; color:#94a3b8; font-size:18px; }
+    .kbd { background:#334155; padding:2px 8px; border-radius:6px; }
+  </style>
+</head>
+<body>
+
+<section class="slide active">
+  <div class="tag">课程Slides</div>
+  <h1>气候变化与健康数据可视化</h1>
+  <h3>预防医学本科（两次课，每次 3×45 分钟）</h3>
+  <p>案例来源：<b>HourlyEnvironAndFlu_DLNM_Application.ipynb</b></p>
+</section>
+
+<section class="slide">
+  <h2>课程目标（Learning Outcomes）</h2>
+  <ul>
+    <li>理解气候变化与健康结局之间的数据路径（暴露→效应→解释）。</li>
+    <li>掌握时空健康数据的基础可视化方法（时间序列、地图、分布图）。</li>
+    <li>能读懂 DLNM 图形（lag-response、ΔRR 曲线、阈值分析）。</li>
+    <li>能输出面向公共卫生决策的图表页。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>Notebook 对应内容概览</h2>
+  <ul>
+    <li>病例数据：广州流感个案（时间、家庭与学校经纬度）。</li>
+    <li>环境暴露：PM2.5、O3、温湿度、降水、风速、辐射等。</li>
+    <li>遥感数据：WorldPop（人口栅格）与 MODIS NDVI（月尺度）。</li>
+    <li>建模与结果：DLNM 对比（RBM vs MCAWM/PAIM），门限与公共卫生收益。</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h1>第一次课（135分钟）</h1>
+  <h3>从数据到地图：气候与健康可视化基础</h3>
+</section>
+
+<section class="slide small">
+  <h2>第一节（45分钟）：问题导入 + 图形素养</h2>
+  <ul>
+    <li>为什么“气候变化”会影响呼吸道疾病风险？</li>
+    <li>区分变量：结局、暴露、协变量、时间分层变量。</li>
+    <li>图形阅读训练：时间序列图、箱线图、分布图。</li>
+    <li>课堂活动：每组提炼 1 个“图要回答的因果问题”。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>第二节（45分钟）：空间暴露可视化实操</h2>
+  <ul>
+    <li>WorldPop 抽样：家庭点与学校点人口暴露。</li>
+    <li>加权暴露：16h 家庭 + 8h 学校（Pop_weighted）。</li>
+    <li>NDVI 500m 缓冲均值与缺失值识别。</li>
+    <li>实操输出：病例点 + 栅格背景 + 行政区边界地图。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>第三节（45分钟）：时间可视化与叙事</h2>
+  <ul>
+    <li>病例与 PM2.5 的周/月序列图绘制。</li>
+    <li>极端天气或政策节点标注（避免“只看趋势不看事件”）。</li>
+    <li>双轴图风险提示：量纲不可比时如何替代。</li>
+    <li>课堂成果：1 图 + 1 分钟解释（科学问题/主要发现/局限）。</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h1>第二次课（135分钟）</h1>
+  <h3>从关联到解释：DLNM 与公共卫生决策可视化</h3>
+</section>
+
+<section class="slide small">
+  <h2>第一节（45分钟）：DLNM 图形读懂</h2>
+  <ul>
+    <li>核心概念：滞后效应（lag）与非线性暴露反应。</li>
+    <li>图1：lag-response 曲线（观察显著滞后窗口）。</li>
+    <li>图2：ΔRR(c) 曲线 + 分段回归断点（阈值识别）。</li>
+    <li>讨论：统计显著与公共卫生意义的区别。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>第二节（45分钟）：从 RR 到政策图</h2>
+  <ul>
+    <li>结果转化路径：RR → PAF → 可归因病例数。</li>
+    <li>比较不同 PM2.5 cutoff 下的健康收益差异。</li>
+    <li>制作“策略优先级图”：收益、可行性、成本三维思考。</li>
+    <li>课堂任务：给定结果表，做 1 页决策汇报图。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>第三节（45分钟）：小组整合汇报</h2>
+  <ul>
+    <li>每组完成“3图组合”：描述图 + 机制图 + 决策图。</li>
+    <li>汇报结构：研究问题 → 图表证据 → 行动建议。</li>
+    <li>教师点评维度：准确性、可读性、可复现性、不过度推断。</li>
+    <li>形成性反馈：每组 1 个优点 + 1 个可改进点。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>建议考核方案</h2>
+  <ul>
+    <li>过程性 40%：课堂练习、图表解读、参与度。</li>
+    <li>终结性 60%：可视化报告（含代码、图注、结论）。</li>
+    <li>加分项：复现 notebook 某一模块并做敏感性分析。</li>
+    <li>底线要求：图表可追溯、统计口径完整、结论有边界。</li>
+  </ul>
+</section>
+
+<section class="slide small">
+  <h2>配套资料建议</h2>
+  <ul>
+    <li>精简课堂 notebook（按教学节奏切分单元）。</li>
+    <li>变量字典（单位、时间尺度、缺失处理规则）。</li>
+    <li>图表模板包（时间序列、地图、DLNM、政策图）。</li>
+    <li>评分 rubric（科学性 40 / 表达 30 / 可复现 30）。</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h1>谢谢</h1>
+  <p>按 <span class="kbd">←</span> <span class="kbd">→</span> 键切换页面（或空格键下一页）</p>
+</section>
+
+<div class="footer">
+  <span>BioStatistics · Climate & Health Visualization</span>
+  <span id="page"></span>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let idx = 0;
+  const page = document.getElementById('page');
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    page.textContent = `${idx + 1} / ${slides.length}`;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) idx = Math.min(slides.length - 1, idx + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) idx = Math.max(0, idx - 1);
+    render();
+  });
+
+  document.addEventListener('click', () => {
+    idx = Math.min(slides.length - 1, idx + 1);
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
